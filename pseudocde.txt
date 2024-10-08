@@ -1,0 +1,155 @@
+public void main()
+  ADD Contact("Alice", "123-4567") to phonebook
+  ADD Contact("Bob", "234-5678") to phonebook
+  ADD Contact("Charlie", "345-6789") to phonebook
+
+  WHILE(true)
+    DISPLAY menu options
+    INPUT user choice
+
+    SWITCH(user choice)
+      CASE 1:
+        CALL insertContact()
+      CASE 2:
+        CALL searchContact()
+      CASE 3:
+        CALL displayContacts()
+      CASE 4:
+        CALL deleteContact()
+      CASE 5:
+        CALL updateContact()
+      CASE 6:
+        DISPLAY "Exiting..."
+        RETURN
+      DEFAULT:
+        DISPLAY "Invalid option"
+    ENDSWITCH
+
+    CALL sortContacts()
+  ENDWHILE
+ENDMETHOD
+
+// insertContact Method
+public void insertContact()
+  IF phonebookSize >= phonebook.length THEN
+    DISPLAY "Phonebook is full"
+    RETURN
+  ENDIF
+
+  INPUT name
+  INPUT number
+
+  CREATE new Contact with name and number
+  ADD new contact to phonebook at phonebookSize
+  INCREMENT phonebookSize
+
+  DISPLAY "Contact added"
+ENDMETHOD
+
+// searchContact Method
+public void searchContact()
+  INPUT name to search
+
+  FOR (int i = 0; i < phonebookSize; i++)
+    IF phonebook[i].name EQUALS name THEN
+      DISPLAY phonebook[i] details
+      RETURN
+    ENDIF
+  ENDFOR
+
+  DISPLAY "Contact not found"
+ENDMETHOD
+
+// displayContacts Method
+public void displayContacts()
+  IF phonebookSize EQUALS 0 THEN
+    DISPLAY "Phonebook is empty"
+    RETURN
+  ENDIF
+
+  FOR (int i = 0; i < phonebookSize; i++)
+    DISPLAY phonebook[i] details
+  ENDFOR
+ENDMETHOD
+
+// deleteContact Method
+public void deleteContact()
+  INPUT name to delete
+
+  FOR (int i = 0; i < phonebookSize; i++)
+    IF phonebook[i].name EQUALS name THEN
+      REPLACE phonebook[i] with last contact in phonebook
+      DECREMENT phonebookSize
+      DISPLAY "Contact deleted"
+      RETURN
+    ENDIF
+  ENDFOR
+
+  DISPLAY "Contact not found"
+ENDMETHOD
+
+// updateContact Method
+public void updateContact()
+  INPUT name to update
+
+  FOR (int i = 0; i < phonebookSize; i++)
+    IF phonebook[i].name EQUALS name THEN
+      INPUT new name
+      INPUT new number
+      UPDATE phonebook[i] with new name and number
+      DISPLAY "Contact updated"
+      RETURN
+    ENDIF
+  ENDFOR
+
+  DISPLAY "Contact not found"
+ENDMETHOD
+
+// sortContacts Method
+public void sortContacts()
+  FOR (int i = 0; i < phonebookSize - 1; i++)
+    FOR (int j = i + 1; j < phonebookSize; j++)
+      IF phonebook[i].name COMPARE_TO phonebook[j].name > 0 THEN
+        SWAP phonebook[i] and phonebook[j]
+      ENDIF
+    ENDFOR
+  ENDFOR
+  DISPLAY "Contacts sorted"
+ENDMETHOD
+
+// Contact Class
+public class Contact
+  String name
+  String number
+
+  // Constructor
+  public Contact(String name, String number)
+    SET this.name = name
+    SET this.number = number
+  ENDCONSTRUCTOR
+
+  // Get name method
+  public String getName()
+    RETURN this.name
+  ENDMETHOD
+
+  // Set name method
+  public void setName(String name)
+    SET this.name = name
+  ENDMETHOD
+
+  // Get number method
+  public String getNumber()
+    RETURN this.number
+  ENDMETHOD
+
+  // Set number method
+  public void setNumber(String number)
+    SET this.number = number
+  ENDMETHOD
+
+  // Override toString method
+  public String toString()
+    RETURN "Name: " + this.name + ", Number: " + this.number
+  ENDMETHOD
+ENDCLASS
